@@ -6,3 +6,7 @@
 
   </main>
 </template>
+
+<style>
+  @import "../assets/scss/compiled/home.min.css"
+</style>

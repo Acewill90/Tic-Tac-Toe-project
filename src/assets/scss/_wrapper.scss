@@ -4,9 +4,6 @@
 
 // Layout
 @import "components/hankreset";
+@import "components/typography";
 
 @import "partials/header";
-
-body {
-    font-family: $font-primary;
-}
