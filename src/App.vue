@@ -15,11 +15,6 @@ import { RouterLink, RouterView } from 'vue-router'
         <span>Toplista</span>
       </button>
     </RouterLink>
-
-    <!-- <nav> 
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav> -->
   </header>
 
   <RouterView />
