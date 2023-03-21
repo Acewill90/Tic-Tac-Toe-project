@@ -4,7 +4,17 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
+    <RouterLink to="/">
+      <button type="button" class="button">
+        <span>Játék indítása</span>
+      </button>
+    </RouterLink>
     <h1>Amőba</h1>
+    <RouterLink to="/score-list">
+      <button type="button" class="button button--blue">
+        <span>Toplista</span>
+      </button>
+    </RouterLink>
 
     <!-- <nav> 
         <RouterLink to="/">Home</RouterLink>
