@@ -50,7 +50,10 @@
               <img src="../assets/images/avatar_white.svg" width="80" height="80" alt="bear-white">
             </div>  
           </div>
-        </div>  
+          <button :disabled="checkPlayerInfos() === false" type="button" class="button play-btn">
+            <span>Játék indítása</span>
+          </button>
+        </div>
       </div>
     </div>
   </main>
@@ -62,10 +65,30 @@
     data() {
       return {
         playerOne: {name: '', avatar: ''},
-        playerTwo: {name: '', avatar: ''},
-        arePlayersReady: false
+        playerTwo: {name: '', avatar: ''}
       }
-    }
+    },
+    methods: {
+      checkPlayerInfos(){
+        if (this.playerOne.name === '') {
+          return false;
+        }
+
+        if (this.playerOne.avatar === '') {
+          return false;
+        }
+
+        if (this.playerTwo.name === '') {
+          return false;
+        }
+
+        if (this.playerTwo.avatar === '') {
+          return false;
+        }
+        
+        return true;
+      }
+    },
   }
 </script>
 
