@@ -40,6 +40,17 @@
         display: flex;
         align-items: center;
         gap: 20px;
+
+        input[type=text] {
+            height: 40px;
+            padding: 5px 10px;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 180px;
+            border: 0;
+            margin: 0;
+        }
     }
 
     &-description {
@@ -54,4 +65,50 @@
     display: grid;
     grid-template-columns: auto auto;
     gap: 50px;
+}
+
+.radio-wrapper {
+    width: 85px;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        img {
+            opacity: .75;
+        }
+    }
+
+    [type="radio"]:checked,
+    [type="radio"]:not(:checked) {
+        position: absolute;
+        opacity: 0;
+        z-index: -9999;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        margin: 0;
+    }
+
+    [type="radio"]:checked + label,
+    [type="radio"]:not(:checked) + label {
+        position: absolute;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        transition: 0.2s all;
+    }
+
+    [type="radio"]:checked + label {
+        border-bottom: 2px solid #fff;
+    }
+
+    img {
+        width: 80px;
+        height: auto;
+        transition: .2s opacity;
+    }
 }
