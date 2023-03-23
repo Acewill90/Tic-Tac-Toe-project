@@ -1,7 +1,7 @@
 <template>
   <main class="homepage">
     <div class="playground-grid">
-      <span v-for="i in 162" class="playground-grid--elem" @click="clickEvent(i-1)"></span>
+      <span v-for="i in 162" class="playground-grid--elem"></span>
       <div class="welcome-screen" v-if="!readyForPlay">
         <div class="form-grid-section">
           <!-- 1st player -->
@@ -98,10 +98,19 @@
         { playerOneAvatar: this.playerOne.avatar, playerTwoAvatar: this.playerTwo.avatar });
       },
 
-      clickEvent(position){
-        console.log(position);
+      resetPlayers(){
+          this.playerOne.name = '';
+          this.playerOne.avatar = '';
+          this.playerTwo.name = '';
+          this.playerTwo.avatar = '';
+          this.readyForPlay = false;
       }
     },
+    created (){
+      this.emitter.on("newGame", () => {
+          this.resetPlayers();
+      });
+    }
   }
 </script>
 

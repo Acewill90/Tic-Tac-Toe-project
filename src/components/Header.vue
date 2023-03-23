@@ -4,7 +4,7 @@
             <img :src="'src/assets/images/'+ playerAvatars.first +'.svg'" width="80" height="80" alt="bear-avatar">
         </picture>
         <RouterLink to="/">
-            <button type="button" class="button">
+            <button type="button" @click="resetPlayers" class="button">
                 <span>Játék indítása</span>
             </button>
         </RouterLink>
@@ -27,6 +27,14 @@
             return {
                 playerAvatars: {first: '', second: ''},
                 readyForPlay: false
+            }
+        },
+        methods: {
+            resetPlayers(){
+                this.playerAvatars.first = '';
+                this.playerAvatars.second = '';
+                this.readyForPlay = false;
+                this.emitter.emit('newGame');
             }
         },
         created (){
