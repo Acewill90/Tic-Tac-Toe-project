@@ -4,4 +4,8 @@ header {
     padding: 30px;
     gap: 60px;
     background-color: $color-primary;
+
+    &.on-game {
+        background-color: #6fb1b4;    
+    }
 }

@@ -1,8 +1,8 @@
 <template>
   <main class="homepage">
     <div class="playground-grid">
-      <span v-for="n in 162" class="playground-grid--elem"></span>
-      <div class="welcome-screen">
+      <span v-for="i in 162" class="playground-grid--elem" @click="clickEvent(i-1)"></span>
+      <div class="welcome-screen" v-if="!readyForPlay">
         <div class="form-grid-section">
           <!-- 1st player -->
           <div class="input-wrapper">
@@ -50,7 +50,8 @@
               <img src="../assets/images/avatar_white.svg" width="80" height="80" alt="bear-white">
             </div>  
           </div>
-          <button :disabled="checkPlayerInfos() === false" type="button" class="button play-btn">
+          <button :disabled="checkPlayerInfos() === false" type="button" 
+                  class="button play-btn" @click="startTheGame">
             <span>Játék indítása</span>
           </button>
         </div>
@@ -65,7 +66,8 @@
     data() {
       return {
         playerOne: {name: '', avatar: ''},
-        playerTwo: {name: '', avatar: ''}
+        playerTwo: {name: '', avatar: ''},
+        readyForPlay: false
       }
     },
     methods: {
@@ -87,6 +89,15 @@
         }
         
         return true;
+      },
+
+      startTheGame(){
+        this.readyForPlay = true;
+        this.emitter.emit('gameStarted', this.readyForPlay);
+      },
+
+      clickEvent(position){
+        console.log(position);
       }
     },
   }

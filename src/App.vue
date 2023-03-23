@@ -1,25 +1,18 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
-
 <template>
-  <header>
-    <RouterLink to="/">
-      <button type="button" class="button">
-        <span>Játék indítása</span>
-      </button>
-    </RouterLink>
-    <h1>Amőba</h1>
-    <RouterLink to="/score-list">
-      <button type="button" class="button button--blue">
-        <span>Toplista</span>
-      </button>
-    </RouterLink>
-  </header>
+  <Header />
 
   <RouterView />
 </template>
 
-<style scoped>
+<script>
+  import {RouterView, RouterLink} from 'vue-router'
+  import Header from './components/Header.vue'
 
-</style>
+  export default {
+    name: 'App',
+    components: {
+      Header
+    },
+    
+  }
+</script>
