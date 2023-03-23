@@ -1,11 +1,17 @@
 header {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 30px;
     gap: 60px;
     background-color: $color-primary;
 
     &.on-game {
         background-color: #6fb1b4;    
+    }
+
+    .avatar {
+        width: 70px;
+        height: 70px;
     }
 }

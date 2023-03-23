@@ -12,17 +12,17 @@
           <div class="input-wrapper">
             <span class="input-description">Válassz karaktert!</span>
             <div class="radio-wrapper">
-              <input type="radio" id="avatar-grey" v-model="playerOne.avatar" value="avatar-grey">
+              <input type="radio" id="avatar-grey" v-model="playerOne.avatar" value="avatar_grey">
               <label for="avatar-grey"></label>
               <img src="../assets/images/avatar_grey.svg" width="80" height="80" alt="bear-grey">
             </div>
             <div class="radio-wrapper">
-              <input type="radio" id="avatar-brown" v-model="playerOne.avatar" value="avatar-brown">
+              <input type="radio" id="avatar-brown" v-model="playerOne.avatar" value="avatar_brown">
               <label for="avatar-brown"></label>
               <img src="../assets/images/avatar_brown.svg" width="80" height="80" alt="bear-brown">
             </div>
             <div class="radio-wrapper">
-              <input type="radio" id="avatar-white" v-model="playerOne.avatar" value="avatar-white">
+              <input type="radio" id="avatar-white" v-model="playerOne.avatar" value="avatar_white">
               <label for="avatar-white"></label>
               <img src="../assets/images/avatar_white.svg" width="80" height="80" alt="bear-white">
             </div>  
@@ -35,17 +35,17 @@
           <div class="input-wrapper">
             <span class="input-description">Válassz karaktert!</span>
             <div class="radio-wrapper">
-              <input type="radio" id="avatar-grey-2" v-model="playerTwo.avatar" value="avatar-grey">
+              <input type="radio" id="avatar-grey-2" v-model="playerTwo.avatar" value="avatar_grey">
               <label for="avatar-grey-2"></label>
               <img src="../assets/images/avatar_grey.svg" width="80" height="80" alt="bear-grey">
             </div>
             <div class="radio-wrapper">
-              <input type="radio" id="avatar-brown-2" v-model="playerTwo.avatar" value="avatar-brown">
+              <input type="radio" id="avatar-brown-2" v-model="playerTwo.avatar" value="avatar_brown">
               <label for="avatar-brown-2"></label>
               <img src="../assets/images/avatar_brown.svg" width="80" height="80" alt="bear-brown">
             </div>
             <div class="radio-wrapper">
-              <input type="radio" id="avatar-white-2" v-model="playerTwo.avatar" value="avatar-white">
+              <input type="radio" id="avatar-white-2" v-model="playerTwo.avatar" value="avatar_white">
               <label for="avatar-white-2"></label>
               <img src="../assets/images/avatar_white.svg" width="80" height="80" alt="bear-white">
             </div>  
@@ -94,6 +94,8 @@
       startTheGame(){
         this.readyForPlay = true;
         this.emitter.emit('gameStarted', this.readyForPlay);
+        this.emitter.emit('playerAvatars', 
+        { playerOneAvatar: this.playerOne.avatar, playerTwoAvatar: this.playerTwo.avatar });
       },
 
       clickEvent(position){
