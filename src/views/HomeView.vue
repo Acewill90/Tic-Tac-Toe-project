@@ -202,9 +202,26 @@
             for (let i = 0; i < this.winningPattern.length; i++){
               const isWinner = this.winningPattern[i].every(element => this.boardForX.includes(element));
               if (isWinner){
-                this.winningPattern[i].forEach(position => 
-                  document.querySelector('.playground-grid--elem:nth-child('+position+')').classList.add('playground-grid--elem-winner')
-                )
+                let lastTwoMark = [];
+                this.winningPattern[i].forEach((position, index) => { 
+                  document.querySelector('.playground-grid--elem:nth-child('+position+')').classList.add('playground-grid--elem-winner');
+                  if (index > 2) {
+                    lastTwoMark.push(position);
+                  }
+                })
+
+                const lastSquare = document.querySelector('.playground-grid--elem:nth-child('+lastTwoMark[1]+')');
+
+                if(lastTwoMark[1]-lastTwoMark[0] === 1){
+                  lastSquare.classList.add('playground-grid--elem-last-horizontal');
+                } else {
+                  lastSquare.classList.add('playground-grid--elem-last-vertical');  
+                }
+
+                const square = document.createElement("div");
+                square.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
+                lastSquare.appendChild(square);
+
                 this.gameOver = true;  
               } 
             }
@@ -218,9 +235,26 @@
             for (let i = 0; i < this.winningPattern.length; i++){
               const isWinner = this.winningPattern[i].every(element => this.boardForO.includes(element));
               if (isWinner){
-                this.winningPattern[i].forEach(position => 
-                  document.querySelector('.playground-grid--elem:nth-child('+position+')').classList.add('playground-grid--elem-winner')
-                )
+                let lastTwoMark = [];
+                this.winningPattern[i].forEach((position, index) => { 
+                  document.querySelector('.playground-grid--elem:nth-child('+position+')').classList.add('playground-grid--elem-winner');
+                  if (index > 2) {
+                    lastTwoMark.push(position);
+                  }
+                })
+
+                const lastSquare = document.querySelector('.playground-grid--elem:nth-child('+lastTwoMark[1]+')');
+
+                if(lastTwoMark[1]-lastTwoMark[0] === 1){
+                  lastSquare.classList.add('playground-grid--elem-last-horizontal');
+                } else {
+                  lastSquare.classList.add('playground-grid--elem-last-vertical');  
+                }
+
+                const square = document.createElement("div");
+                square.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
+                lastSquare.appendChild(square);
+
                 this.gameOver = true;  
               } 
             }

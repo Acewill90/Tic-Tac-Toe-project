@@ -64,6 +64,43 @@
                 background-color: rgba($color: #932c2c, $alpha: 0.55);
             }
         }
+
+        &-last-horizontal,
+        &-last-vertical {
+            .winner-icon {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-repeat: no-repeat;
+                z-index: 10;
+                
+                &-avatar_grey {
+                    background-image: url('../../images/avatar_grey.svg');
+                }
+
+                &-avatar_brown {
+                    background-image: url('../../images/avatar_brown.svg');
+                }
+
+                &-avatar_white {
+                    background-image: url('../../images/avatar_white.svg');
+                }
+            }    
+        }
+
+        &-last-vertical {
+            .winner-icon {
+                bottom: calc(-100% - 3px);
+                left: 0;
+            }
+        }
+
+        &-last-horizontal {
+            .winner-icon {
+                right: calc(-100% - 3px);
+                bottom: 0;
+            }
+        }
     }    
 }
 
