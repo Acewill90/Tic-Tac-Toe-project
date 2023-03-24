@@ -2,7 +2,7 @@
   <main class="homepage">
     <div class="playground-grid">
       <span v-for="i in 162" class="playground-grid--elem" @click="clickOnSquare(i, $event)"></span>
-      <div class="welcome-screen" v-if="!readyForPlay">
+      <div class="welcome-screen cover-screen" v-if="!readyForPlay">
         <div class="form-grid-section">
           <!-- 1st player -->
           <div class="input-wrapper">
@@ -56,6 +56,7 @@
           </button>
         </div>
       </div>
+      <div class="cover-screen" v-if="gameOver"></div>
     </div>
   </main>
 </template>
@@ -68,6 +69,7 @@
         playerOne: {name: '', avatar: ''},
         playerTwo: {name: '', avatar: ''},
         readyForPlay: false,
+        gameOver: false,
         boardForX: new Array(162),
         boardForO: new Array(162),
         startingX: true,
@@ -170,6 +172,7 @@
         this.playerTwo.name = '';
         this.playerTwo.avatar = '';
         this.readyForPlay = false;
+        this.gameOver = false;
       },
 
       clickOnSquare(position, e){
@@ -201,7 +204,8 @@
               if (isWinner){
                 this.winningPattern[i].forEach(position => 
                   document.querySelector('.playground-grid--elem:nth-child('+position+')').classList.add('playground-grid--elem-winner')
-                )  
+                )
+                this.gameOver = true;  
               } 
             }
           }          
@@ -216,7 +220,8 @@
               if (isWinner){
                 this.winningPattern[i].forEach(position => 
                   document.querySelector('.playground-grid--elem:nth-child('+position+')').classList.add('playground-grid--elem-winner')
-                )  
+                )
+                this.gameOver = true;  
               } 
             }
           }  
