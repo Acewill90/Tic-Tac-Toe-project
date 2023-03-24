@@ -1,3 +1,7 @@
+<script setup>
+    import { RouterLink } from 'vue-router'
+</script>
+
 <template>
     <header :class="{ 'on-game': readyForPlay }">
         <picture v-if="playerAvatars.first" class="avatar">
