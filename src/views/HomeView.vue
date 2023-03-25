@@ -68,6 +68,7 @@
       return {
         playerOne: {name: '', avatar: ''},
         playerTwo: {name: '', avatar: ''},
+        winner: {name: '', score: 0},
         readyForPlay: false,
         gameOver: false,
         boardForX: new Array(162),
@@ -171,28 +172,13 @@
         this.playerOne.avatar = '';
         this.playerTwo.name = '';
         this.playerTwo.avatar = '';
+        this.winner.name = '';
+        this.winner.score = 0;
         this.readyForPlay = false;
         this.gameOver = false;
       },
 
-      clickOnSquare(position, e){
-        // let newArr = [];
-        // let finalArr = [];
-        // for (let i = 0; i < this.winningPatternFirst.length; i++) {
-        //   const innerArrayLength = this.winningPatternFirst[i].length;
-        //   // loop the inner array
-        //   for (let k = 2; k < 18; k++) {
-        //     for (let j = 0; j < innerArrayLength; j++) {
-        //         newArr.push(this.winningPatternFirst[i][j]+k)   
-        //     }
-        //   }      
-        // }
-
-        // while (newArr.length > 0) {
-        //   finalArr.push(newArr.splice(0,5));
-        // }
-        // console.log(finalArr);
-        
+      clickOnSquare(position, e){        
         if (this.startingX) {
           if (this.boardForX[position-1] === undefined) { 
             this.boardForX[position-1] = position;
@@ -222,7 +208,14 @@
                 square.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
                 lastSquare.appendChild(square);
 
-                this.gameOver = true;  
+                this.gameOver = true;
+                this.winner.name = this.playerOne.name;
+
+                this.boardForX.forEach((elem) => {
+                  if(typeof elem === 'number'){
+                    this.winner.score++;
+                  }
+                })   
               } 
             }
           }          
@@ -255,7 +248,14 @@
                 square.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
                 lastSquare.appendChild(square);
 
-                this.gameOver = true;  
+                this.gameOver = true;
+                this.winner.name = this.playerTwo.name;
+
+                this.boardForO.forEach((elem) => {
+                  if(typeof elem === 'number'){
+                    this.winner.score++;
+                  }
+                })  
               } 
             }
           }  
