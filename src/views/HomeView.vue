@@ -1,13 +1,28 @@
 <template>
   <main class="homepage">
-    <div class="playground-grid">
-      <span v-for="i in 162" class="playground-grid--elem" @click="clickOnSquare(i, $event)"></span>
+    <div class="playground-grid" :class="{ 'playground-grid--on-play': readyForPlay }">
+      <span v-for="i in 162" class="playground-grid--elem" v-if="!readyForPlay"></span>
+
+      <div class="playground-grid--row" v-if="readyForPlay" v-for="k in boardInputs.rows">
+        <div class="playground-grid--square" v-if="readyForPlay" 
+              v-for="j in boardInputs.columns" @click="clickOnSquare(j-1, k-1, $event)">
+        </div>
+      </div>
       <div class="welcome-screen cover-screen" v-if="!readyForPlay">
         <div class="form-grid-section">
+          <div class="input-wrapper">
+            <label for="columns" class="input-description">Oszlopok és sorok száma:</label>
+            <input type="number" id="columns" min="3" v-model="boardInputs.columns">
+            <input type="number" id="rows" min="3" v-model="boardInputs.rows">  
+          </div>
+          <div class="input-wrapper">
+            <label for="symbols" class="input-description">Egyező jelek száma:</label>
+            <input type="number" id="symbols" min="3" v-model="boardInputs.symbols">    
+          </div>
           <!-- 1st player -->
           <div class="input-wrapper">
             <label for="player-1" class="input-description">1. játékos neve:</label>
-            <input type="text" id="player-1" name="form-player-one" required v-model="playerOne.name">  
+            <input type="text" id="player-1" name="form-player-one" v-model="playerOne.name">  
           </div>
           <div class="input-wrapper">
             <span class="input-description">Válassz karaktert!</span>
@@ -30,7 +45,7 @@
           <!-- 2nd player -->
           <div class="input-wrapper">
             <label for="player-2" class="input-description">2. játékos neve:</label>
-            <input type="text" id="player-2" name="form-player-two" required v-model="playerTwo.name">  
+            <input type="text" id="player-2" name="form-player-two" v-model="playerTwo.name">  
           </div>
           <div class="input-wrapper">
             <span class="input-description">Válassz karaktert!</span>
@@ -66,81 +81,34 @@
     name: "Home",
     data() {
       return {
-        playerOne: {name: '', avatar: ''},
-        playerTwo: {name: '', avatar: ''},
+        playerOne: {name: 'player-1', avatar: 'avatar_grey'},
+        playerTwo: {name: 'player-2', avatar: 'avatar_grey'},
         winner: {name: '', score: 0},
         readyForPlay: false,
         gameOver: false,
-        boardForX: new Array(162),
-        boardForO: new Array(162),
-        startingX: true,
-        winningPatternFirst: [
-          [1,19,37,55,73],[19,37,55,73,91],[37,55,73,91,109],[55,73,91,109,127],[73,91,109,127,145]
-        ],
-        winningPattern: [
-          [1, 2, 3, 4, 5],[2, 3, 4, 5, 6],[3, 4, 5, 6, 7],[4, 5, 6, 7, 8],[5, 6, 7, 8, 9],
-          [6, 7, 8, 9, 10],[7, 8, 9, 10, 11],[8, 9, 10, 11, 12],[9, 10, 11, 12, 13],[10, 11, 12, 13, 14],
-          [11, 12, 13, 14, 15],[12, 13, 14, 15, 16],[13, 14, 15, 16, 17],[14, 15, 16, 17, 18],
-          [19, 20, 21, 22, 23],[20, 21, 22, 23, 24],[21, 22, 23, 24, 25],[22, 23, 24, 25, 26],
-          [23, 24, 25, 26, 27],[24, 25, 26, 27, 28],[25, 26, 27, 28, 29],[26, 27, 28, 29, 30],
-          [27, 28, 29, 30, 31],[28, 29, 30, 31, 32],[29, 30, 31, 32, 33],[30, 31, 32, 33, 34],
-          [31, 32, 33, 34, 35],[32, 33, 34, 35, 36],[37, 38, 39, 40, 41],[38, 39, 40, 41, 42],
-          [39, 40, 41, 42, 43],[40, 41, 42, 43, 44],[41, 42, 43, 44, 45],[42, 43, 44, 45, 46],
-          [43, 44, 45, 46, 47],[44, 45, 46, 47, 48],[45, 46, 47, 48, 49],[46, 47, 48, 49, 50],
-          [47, 48, 49, 50, 51],[48, 49, 50, 51, 52],[49, 50, 51, 52, 53],[50, 51, 52, 53, 54],
-          [55, 56, 57, 58, 59],[56, 57, 58, 59, 60],[57, 58, 59, 60, 61],[58, 59, 60, 61, 62],
-          [59, 60, 61, 62, 63],[60, 61, 62, 63, 64],[61, 62, 63, 64, 65],[62, 63, 64, 65, 66],
-          [63, 64, 65, 66, 67],[64, 65, 66, 67, 68],[65, 66, 67, 68, 69],[66, 67, 68, 69, 70],
-          [67, 68, 69, 70, 71],[68, 69, 70, 71, 72],[73, 74, 75, 76, 77],[74, 75, 76, 77, 78],
-          [75, 76, 77, 78, 79],[76, 77, 78, 79, 80],[77, 78, 79, 80, 81],[78, 79, 80, 81, 82],
-          [79, 80, 81, 82, 83],[80, 81, 82, 83, 84],[81, 82, 83, 84, 85],[82, 83, 84, 85, 86],
-          [83, 84, 85, 86, 87],[84, 85, 86, 87, 88],[85, 86, 87, 88, 89],[86, 87, 88, 89, 90],
-          [91, 92, 93, 94, 95],[92, 93, 94, 95, 96],[93, 94, 95, 96, 97],[94, 95, 96, 97, 98],
-          [95, 96, 97, 98, 99],[96, 97, 98, 99, 100],[97, 98, 99, 100, 101],[98, 99, 100, 101, 102],
-          [99, 100, 101, 102, 103],[100, 101, 102, 103, 104],[101, 102, 103, 104, 105],
-          [102, 103, 104, 105, 106],[103, 104, 105, 106, 107],[104, 105, 106, 107, 108],
-          [109, 110, 111, 112, 113],[110, 111, 112, 113, 114],[111, 112, 113, 114, 115],
-          [112, 113, 114, 115, 116],[113, 114, 115, 116, 117],[114, 115, 116, 117, 118],
-          [115, 116, 117, 118, 119],[116, 117, 118, 119, 120],[117, 118, 119, 120, 121],
-          [118, 119, 120, 121, 122],[119, 120, 121, 122, 123],[120, 121, 122, 123, 124],
-          [121, 122, 123, 124, 125],[122, 123, 124, 125, 126],[127, 128, 129, 130, 131],
-          [128, 129, 130, 131, 132],[129, 130, 131, 132, 133],[130, 131, 132, 133, 134],
-          [131, 132, 133, 134, 135],[132, 133, 134, 135, 136],[133, 134, 135, 136, 137],
-          [134, 135, 136, 137, 138],[135, 136, 137, 138, 139],[136, 137, 138, 139, 140],
-          [137, 138, 139, 140, 141],[138, 139, 140, 141, 142],[139, 140, 141, 142, 143],
-          [140, 141, 142, 143, 144],[145, 146, 147, 148, 149],[146, 147, 148, 149, 150],
-          [147, 148, 149, 150, 151],[148, 149, 150, 151, 152],[149, 150, 151, 152, 153],
-          [150, 151, 152, 153, 154],[151, 152, 153, 154, 155],[152, 153, 154, 155, 156],
-          [153, 154, 155, 156, 157],[154, 155, 156, 157, 158],[155, 156, 157, 158, 159],
-          [156, 157, 158, 159, 160],[157, 158, 159, 160, 161],[158, 159, 160, 161, 162],
-          [1, 19, 37, 55, 73],[19, 37, 55, 73, 91],[37, 55, 73, 91, 109],[55, 73, 91, 109, 127],
-          [73, 91, 109, 127, 145],[2, 20, 38, 56, 74],[20, 38, 56, 74, 92],[38, 56, 74, 92, 110],
-          [56, 74, 92, 110, 128],[74, 92, 110, 128, 146],[3, 21, 39, 57, 75],[4, 22, 40, 58, 76],
-          [5, 23, 41, 59, 77],[6, 24, 42, 60, 78],[7, 25, 43, 61, 79],[8, 26, 44, 62, 80],
-          [9, 27, 45, 63, 81],[10, 28, 46, 64, 82],[11, 29, 47, 65, 83],[12, 30, 48, 66, 84],
-          [13, 31, 49, 67, 85],[14, 32, 50, 68, 86],[15, 33, 51, 69, 87],[16, 34, 52, 70, 88],
-          [17, 35, 53, 71, 89],[18, 36, 54, 72, 90],[21, 39, 57, 75, 93],[22, 40, 58, 76, 94],
-          [23, 41, 59, 77, 95],[24, 42, 60, 78, 96],[25, 43, 61, 79, 97],[26, 44, 62, 80, 98],
-          [27, 45, 63, 81, 99],[28, 46, 64, 82, 100],[29, 47, 65, 83, 101],[30, 48, 66, 84, 102],
-          [31, 49, 67, 85, 103],[32, 50, 68, 86, 104],[33, 51, 69, 87, 105],[34, 52, 70, 88, 106],
-          [35, 53, 71, 89, 107],[36, 54, 72, 90, 108],[39, 57, 75, 93, 111],[40, 58, 76, 94, 112],
-          [41, 59, 77, 95, 113],[42, 60, 78, 96, 114],[43, 61, 79, 97, 115],[44, 62, 80, 98, 116],
-          [45, 63, 81, 99, 117],[46, 64, 82, 100, 118],[47, 65, 83, 101, 119],[48, 66, 84, 102, 120],
-          [49, 67, 85, 103, 121],[50, 68, 86, 104, 122],[51, 69, 87, 105, 123],[52, 70, 88, 106, 124],
-          [53, 71, 89, 107, 125],[54, 72, 90, 108, 126],[57, 75, 93, 111, 129],[58, 76, 94, 112, 130],
-          [59, 77, 95, 113, 131],[60, 78, 96, 114, 132],[61, 79, 97, 115, 133],[62, 80, 98, 116, 134],
-          [63, 81, 99, 117, 135],[64, 82, 100, 118, 136],[65, 83, 101, 119, 137],[66, 84, 102, 120, 138],
-          [67, 85, 103, 121, 139],[68, 86, 104, 122, 140],[69, 87, 105, 123, 141],[70, 88, 106, 124, 142],
-          [71, 89, 107, 125, 143],[72, 90, 108, 126, 144],[75, 93, 111, 129, 147],[76, 94, 112, 130, 148],
-          [77, 95, 113, 131, 149],[78, 96, 114, 132, 150],[79, 97, 115, 133, 151],[80, 98, 116, 134, 152],
-          [81, 99, 117, 135, 153],[82, 100, 118, 136, 154],[83, 101, 119, 137, 155],[84, 102, 120, 138, 156],
-          [85, 103, 121, 139, 157],[86, 104, 122, 140, 158],[87, 105, 123, 141, 159],
-          [88, 106, 124, 142, 160],[89, 107, 125, 143, 161],[90, 108, 126, 144, 162]
-        ]
+        boardInputs: {columns: 18, rows: 9, symbols: 5},
+        board: [],
+        startingX: true
       }
     },
     methods: {
       checkPlayerInfos(){
+        if (this.boardInputs.columns === '' || this.boardInputs.columns < 3) {
+          return false;
+        }
+
+        if (this.boardInputs.rows === '' || this.boardInputs.rows < 3) {
+          return false;
+        }
+
+        if (this.boardInputs.symbols === '' || this.boardInputs.symbols < 3) {
+          return false;
+        }
+
+        if (this.boardInputs.symbols > (Math.min(this.boardInputs.columns, this.boardInputs.rows))) {
+          return false;
+        }
+
         if (this.playerOne.name === '') {
           return false;
         }
@@ -161,6 +129,12 @@
       },
 
       startTheGame(){
+        for(let i=0; i<this.boardInputs.rows; i++){
+          for(let k=0; k<this.boardInputs.columns; k++){
+            this.board.push([]);  
+          }
+        }
+        
         this.readyForPlay = true;
         this.emitter.emit('gameStarted', this.readyForPlay);
         this.emitter.emit('playerAvatars', 
@@ -174,91 +148,177 @@
         this.playerTwo.avatar = '';
         this.winner.name = '';
         this.winner.score = 0;
+        this.board = [];
         this.readyForPlay = false;
         this.gameOver = false;
+        this.startingX = true;
       },
 
-      clickOnSquare(position, e){        
-        if (this.startingX) {
-          if (this.boardForX[position-1] === undefined) { 
-            this.boardForX[position-1] = position;
-            this.boardForO[position-1] = 'reserved';
+      clickOnSquare(x, y, e){
+        if (this.startingX){
+          if (this.board[x][y] === undefined) { 
+            this.board[x][y] = 'x';
+            e.target.classList.add('playground-grid--square-active', 'playground-grid--square-active-x');
+            this.checkWinningRow(x,y,'x');
+            this.checkWinningColumn(x,y,'x');
             this.startingX = false;
-            e.target.classList.add('playground-grid--elem-active', 'playground-grid--elem-active-x');
-            for (let i = 0; i < this.winningPattern.length; i++){
-              const isWinner = this.winningPattern[i].every(element => this.boardForX.includes(element));
-              if (isWinner){
-                let lastTwoMark = [];
-                this.winningPattern[i].forEach((position, index) => { 
-                  document.querySelector('.playground-grid--elem:nth-child('+position+')').classList.add('playground-grid--elem-winner');
-                  if (index > 2) {
-                    lastTwoMark.push(position);
-                  }
-                })
-
-                const lastSquare = document.querySelector('.playground-grid--elem:nth-child('+lastTwoMark[1]+')');
-
-                if(lastTwoMark[1]-lastTwoMark[0] === 1){
-                  lastSquare.classList.add('playground-grid--elem-last-horizontal');
-                } else {
-                  lastSquare.classList.add('playground-grid--elem-last-vertical');  
-                }
-
-                const square = document.createElement("div");
-                square.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
-                lastSquare.appendChild(square);
-
-                this.gameOver = true;
-                this.winner.name = this.playerOne.name;
-
-                this.boardForX.forEach((elem) => {
-                  if(typeof elem === 'number'){
-                    this.winner.score++;
-                  }
-                })   
-              } 
-            }
-          }          
+          }
         } else {
-          if (this.boardForO[position-1] === undefined) {
-            this.boardForO[position-1] = position;
-            this.boardForX[position-1] = 'reserved';
+          if (this.board[x][y] === undefined) { 
+            this.board[x][y] = 'o';
+            e.target.classList.add('playground-grid--square-active', 'playground-grid--square-active-o');
+            this.checkWinningRow(x,y,'o');
+            this.checkWinningColumn(x,y,'o');
             this.startingX = true;
-            e.target.classList.add('playground-grid--elem-active', 'playground-grid--elem-active-o');
-            for (let i = 0; i < this.winningPattern.length; i++){
-              const isWinner = this.winningPattern[i].every(element => this.boardForO.includes(element));
-              if (isWinner){
-                let lastTwoMark = [];
-                this.winningPattern[i].forEach((position, index) => { 
-                  document.querySelector('.playground-grid--elem:nth-child('+position+')').classList.add('playground-grid--elem-winner');
-                  if (index > 2) {
-                    lastTwoMark.push(position);
-                  }
-                })
+          }
+        }
+      },
 
-                const lastSquare = document.querySelector('.playground-grid--elem:nth-child('+lastTwoMark[1]+')');
+      checkWinningRow(x,y,symbol){
+        let counterLeft = 0;
+        let counterRight = 0;
+        let positions = [x+1];                
 
-                if(lastTwoMark[1]-lastTwoMark[0] === 1){
-                  lastSquare.classList.add('playground-grid--elem-last-horizontal');
-                } else {
-                  lastSquare.classList.add('playground-grid--elem-last-vertical');  
-                }
+        for(let i=1; i < this.boardInputs.symbols; i++){
+          if ((x-i >= 0) && this.board[x-i][y] === symbol){
+            counterLeft++;
+            positions.push(x-i+1);
+          } else {
+            break;
+          }
+        }
 
-                const square = document.createElement("div");
-                square.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
-                lastSquare.appendChild(square);
+        for(let i=1; i < this.boardInputs.symbols; i++){
+          if (this.board[x+i][y] === symbol){
+            counterRight++;
+            positions.push(x+i+1);
+          } else {
+            break;
+          }
+        }
 
-                this.gameOver = true;
-                this.winner.name = this.playerTwo.name;
+        // winner row combination
+        if((counterLeft + counterRight) >= (this.boardInputs.symbols - 1)){
+          positions.forEach((elem) => {
+            document.querySelector(
+              '.playground-grid--row:nth-child('+(y+1)+') .playground-grid--square:nth-child('+elem+')'
+              ).classList.add('playground-grid--square-winner');
+          })
+          
+          this.avatarOnWinnersBoardRow(positions, y);
+          this.winnerNameAndScore();
+          this.gameOver = true;
+        }        
+      },
 
-                this.boardForO.forEach((elem) => {
-                  if(typeof elem === 'number'){
-                    this.winner.score++;
-                  }
-                })  
-              } 
-            }
-          }  
+      checkWinningColumn(x,y,symbol){
+        let counterUp = 0;
+        let counterDown = 0;
+        let positions = [y+1];
+
+        for(let i=1; i < this.boardInputs.symbols; i++){
+          if ((y-i >= 0) && this.board[x][y-i] === symbol){
+            counterUp++;
+            positions.push(y-i+1);
+          } else {
+            break;
+          }    
+        }
+
+        for(let i=1; i < this.boardInputs.symbols; i++){
+          if (this.board[x][y+i] === symbol){
+            counterDown++;
+            positions.push(y+i+1);
+          } else {
+            break;
+          }
+        }
+
+        // winner column combination
+        if((counterUp + counterDown) >= (this.boardInputs.symbols - 1)){
+          positions.forEach((elem) => {
+            document.querySelector(
+              '.playground-grid--row:nth-child('+elem+') .playground-grid--square:nth-child('+(x+1)+')'
+              ).classList.add('playground-grid--square-winner');
+          })
+          
+          this.avatarOnWinnersBoardColumn(positions, x);
+          this.winnerNameAndScore();
+          this.gameOver = true;
+        }
+      },
+
+      avatarOnWinnersBoardRow(positions, y){
+        const avatarContainer = document.createElement("div");
+        const firstPosition = Math.min(...positions);
+        const lastPosition = Math.max(...positions);
+
+        if (this.startingX === true){
+          avatarContainer.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
+        } else {
+          avatarContainer.classList.add('winner-icon', 'winner-icon-'+this.playerTwo.avatar);
+        }
+
+        if (lastPosition < this.boardInputs.columns){
+          const lastSquare = document.querySelector(
+            '.playground-grid--row:nth-child('+(y+1)+') .playground-grid--square:nth-child('+lastPosition+')'
+          );
+          lastSquare.classList.add('playground-grid--elem-last-horizontal');
+          lastSquare.appendChild(avatarContainer);  
+        } else {
+          const firstSquare = document.querySelector(
+            '.playground-grid--row:nth-child('+(y+1)+') .playground-grid--square:nth-child('+firstPosition+')'
+          );
+          firstSquare.classList.add('playground-grid--elem-first-horizontal');
+          firstSquare.appendChild(avatarContainer);  
+        }
+      },
+
+      avatarOnWinnersBoardColumn(positions, x){
+        const avatarContainer = document.createElement("div");
+        const firstPosition = Math.min(...positions);
+        const lastPosition = Math.max(...positions);
+
+        if (this.startingX === true){
+          avatarContainer.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
+        } else {
+          avatarContainer.classList.add('winner-icon', 'winner-icon-'+this.playerTwo.avatar);
+        }
+
+        if (lastPosition < this.boardInputs.rows){
+          const lastSquare = document.querySelector(
+            '.playground-grid--row:nth-child('+lastPosition+') .playground-grid--square:nth-child('+(x+1)+')'
+          );
+          lastSquare.classList.add('playground-grid--elem-last-vertical');
+          lastSquare.appendChild(avatarContainer);  
+        } else {
+          const firstSquare = document.querySelector(
+            '.playground-grid--row:nth-child('+firstPosition+') .playground-grid--square:nth-child('+(x+1)+')'
+          );
+          firstSquare.classList.add('playground-grid--elem-first-vertical');
+          firstSquare.appendChild(avatarContainer);  
+        }
+      },
+
+      winnerNameAndScore(){
+        if(this.startingX){
+          this.winner.name = this.playerOne.name;
+          this.board.forEach((elems) => {
+            elems.forEach((elem) => {
+              if(elem === 'x'){
+                this.winner.score++;
+              }
+            })
+          })
+        } else {
+          this.winner.name = this.playerTwo.name;
+          this.board.forEach((elems) => {
+            elems.forEach((elem) => {
+              if(elem === 'o'){
+                this.winner.score++;
+              }
+            })
+          })  
         }
       }
     },

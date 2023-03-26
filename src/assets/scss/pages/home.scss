@@ -17,13 +17,38 @@
     background-color: #494949;
     grid-template-columns: repeat(18, 1fr);
 
-    &--elem {
+    &--on-play {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        max-width: none;
+    }
+
+    &--row {
+        display: flex;
+        gap: 3px;
+        background-color: #494949;
         height: 60px;
+    }
+
+    &--square {
+        width: 60px;
+        height: 100%;
         background-color: #292929;
         cursor: pointer;
+        transition: .2s opacity;
+
+        &:hover {
+            opacity: .7;
+        }
 
         &-active {
             cursor: default;
+            transition: none;
+
+            &:hover {
+                opacity: 1;
+            }
 
             &::before {
                 position: absolute;
@@ -64,9 +89,17 @@
                 background-color: rgba($color: #932c2c, $alpha: 0.55);
             }
         }
+    }
+
+    &--elem {
+        height: 60px;
+        background-color: #292929;
+        cursor: pointer;
 
         &-last-horizontal,
-        &-last-vertical {
+        &-last-vertical,
+        &-first-horizontal,
+        &-first-vertical {
             .winner-icon {
                 position: absolute;
                 width: 100%;
@@ -88,10 +121,24 @@
             }    
         }
 
+        &-first-vertical {
+            .winner-icon {
+                top: calc(-100% - 3px);
+                left: 0;
+            }
+        }
+
         &-last-vertical {
             .winner-icon {
                 bottom: calc(-100% - 3px);
                 left: 0;
+            }
+        }
+
+        &-first-horizontal {
+            .winner-icon {
+                left: calc(-100% - 3px);
+                bottom: 0;
             }
         }
 
@@ -117,7 +164,12 @@
         align-items: center;
         gap: 20px;
 
-        input[type=text] {
+        &:nth-child(odd) {
+            justify-self: end;
+        }
+
+        input[type=text],
+        input[type=number] {
             height: 40px;
             padding: 5px 10px;
             font-size: 16px;
@@ -126,6 +178,11 @@
             width: 180px;
             border: 0;
             margin: 0;
+        }
+
+        input[type=number] {
+            height: 30px;
+            width: 70px;
         }
     }
 
