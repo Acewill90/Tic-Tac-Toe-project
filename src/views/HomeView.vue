@@ -265,13 +265,13 @@
           const lastSquare = document.querySelector(
             '.playground-grid--row:nth-child('+(y+1)+') .playground-grid--square:nth-child('+lastPosition+')'
           );
-          lastSquare.classList.add('playground-grid--elem-last-horizontal');
+          lastSquare.classList.add('playground-grid--square-last-horizontal');
           lastSquare.appendChild(avatarContainer);  
         } else {
           const firstSquare = document.querySelector(
             '.playground-grid--row:nth-child('+(y+1)+') .playground-grid--square:nth-child('+firstPosition+')'
           );
-          firstSquare.classList.add('playground-grid--elem-first-horizontal');
+          firstSquare.classList.add('playground-grid--square-first-horizontal');
           firstSquare.appendChild(avatarContainer);  
         }
       },
@@ -291,13 +291,13 @@
           const lastSquare = document.querySelector(
             '.playground-grid--row:nth-child('+lastPosition+') .playground-grid--square:nth-child('+(x+1)+')'
           );
-          lastSquare.classList.add('playground-grid--elem-last-vertical');
+          lastSquare.classList.add('playground-grid--square-last-vertical');
           lastSquare.appendChild(avatarContainer);  
         } else {
           const firstSquare = document.querySelector(
             '.playground-grid--row:nth-child('+firstPosition+') .playground-grid--square:nth-child('+(x+1)+')'
           );
-          firstSquare.classList.add('playground-grid--elem-first-vertical');
+          firstSquare.classList.add('playground-grid--square-first-vertical');
           firstSquare.appendChild(avatarContainer);  
         }
       },
@@ -350,6 +350,6 @@
   }
 </script>
 
-<style>
+<style scoped>
   @import "../assets/scss/compiled/home.min.css";
 </style>
