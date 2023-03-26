@@ -207,6 +207,7 @@
           
           this.avatarOnWinnersBoardRow(positions, y);
           this.winnerNameAndScore();
+          // this.sendWinnerData();
           this.gameOver = true;
         }        
       },
@@ -244,6 +245,7 @@
           
           this.avatarOnWinnersBoardColumn(positions, x);
           this.winnerNameAndScore();
+          // this.sendWinnerData();
           this.gameOver = true;
         }
       },
@@ -320,6 +322,24 @@
             })
           })  
         }
+      },
+
+      sendWinnerData(){
+        const authToken = 'hkew57zhne345hb3kw-zh65u';
+
+        fetch('https://eomxihgqom5ex61.m.pipedream.net/result', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify({
+            user: this.winner.name,
+            score: this.winner.score  
+          })
+        })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err.message))
       }
     },
     created (){
