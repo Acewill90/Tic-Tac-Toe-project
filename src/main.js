@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import mitt from 'mitt'
 
-// import './assets/main.css'
+import './assets/scss/compiled/wrapper.min.css'
 
 const emitter = mitt()
 const app = createApp(App)

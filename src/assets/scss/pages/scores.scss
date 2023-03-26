@@ -1,0 +1,32 @@
+@import '../site_variables';
+
+.cover-screen {
+    &--scores {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 65px 20px 20px 20px;
+    }
+
+    h2 {
+        color: $color-btn-secondary;
+    }
+}
+
+.list {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;    
+
+    &--box {
+        display: flex;
+        flex-direction: column;    
+    }
+
+    &--elem {
+        color: #fce3cd;
+        letter-spacing: 1px;
+        line-height: 1.15;
+    }
+}

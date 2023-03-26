@@ -2,9 +2,11 @@ body {
     font-family: $font-primary;
 }
 
-h1 {
+h1,
+.h1 {
     font-family: $font-secondary;
     font-size: 50px;
     color: #ffe6d0;
     font-weight: 400;
+    line-height: 1;
 }
