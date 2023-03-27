@@ -161,6 +161,7 @@
             e.target.classList.add('playground-grid--square-active', 'playground-grid--square-active-x');
             this.checkWinningRow(x,y,'x');
             this.checkWinningColumn(x,y,'x');
+            this.checkWinningDiagonal(x,y,'x');
             this.startingX = false;
           }
         } else {
@@ -169,6 +170,7 @@
             e.target.classList.add('playground-grid--square-active', 'playground-grid--square-active-o');
             this.checkWinningRow(x,y,'o');
             this.checkWinningColumn(x,y,'o');
+            this.checkWinningDiagonal(x,y,'o');
             this.startingX = true;
           }
         }
@@ -250,6 +252,44 @@
         }
       },
 
+      checkWinningDiagonal(x,y,symbol){
+        let counterLeftUp = 0;
+        let counterRightDown = 0;
+        let positions = [[x+1, y+1]];                
+
+        for(let i=1; i < this.boardInputs.symbols; i++){
+          if ((x-i >= 0) && this.board[x-i][y-i] === symbol){
+            counterLeftUp++;
+            positions.push([x-i+1, y-i+1]);
+          } else {
+            break;
+          }
+        }
+
+        for(let i=1; i < this.boardInputs.symbols; i++){
+          if (this.board[x+i][y+i] === symbol){
+            counterRightDown++;
+            positions.push([x+i+1, y+i+1]);
+          } else {
+            break;
+          }
+        }
+
+        // winner diagonal combination
+        if((counterLeftUp + counterRightDown) >= (this.boardInputs.symbols - 1)){
+          positions.forEach((elem) => {
+            document.querySelector(
+              '.playground-grid--row:nth-child('+elem[1]+') .playground-grid--square:nth-child('+elem[0]+')'
+              ).classList.add('playground-grid--square-winner');
+          })
+          
+          this.avatarOnWinnersBoardDiagonal(positions, y);
+          this.winnerNameAndScore();
+          // this.sendWinnerData();
+          this.gameOver = true;
+        }        
+      },
+
       avatarOnWinnersBoardRow(positions, y){
         const avatarContainer = document.createElement("div");
         const firstPosition = Math.min(...positions);
@@ -298,6 +338,36 @@
             '.playground-grid--row:nth-child('+firstPosition+') .playground-grid--square:nth-child('+(x+1)+')'
           );
           firstSquare.classList.add('playground-grid--square-first-vertical');
+          firstSquare.appendChild(avatarContainer);  
+        }
+      },
+
+      avatarOnWinnersBoardDiagonal(positions, y){
+        const avatarContainer = document.createElement("div");
+        function sortFunction(a, b) {if (a[0] < b[0]) { return -1;} else { return 1;}}
+        const sortedPositions = positions.sort(sortFunction);
+        const lastXPosition = sortedPositions[this.boardInputs.symbols-1][0];
+        const lastYPosition = sortedPositions[this.boardInputs.symbols-1][1];
+        const firstXPosition = sortedPositions[0][0];
+        const firstYPosition = sortedPositions[0][1];
+
+        if (this.startingX === true){
+          avatarContainer.classList.add('winner-icon', 'winner-icon-'+this.playerOne.avatar);
+        } else {
+          avatarContainer.classList.add('winner-icon', 'winner-icon-'+this.playerTwo.avatar);
+        }
+
+        if (lastXPosition < this.boardInputs.columns){
+          const lastSquare = document.querySelector(
+            '.playground-grid--row:nth-child('+lastYPosition+') .playground-grid--square:nth-child('+lastXPosition+')'
+          );
+          lastSquare.classList.add('playground-grid--square-last-horizontal');
+          lastSquare.appendChild(avatarContainer);  
+        } else {
+          const firstSquare = document.querySelector(
+            '.playground-grid--row:nth-child('+firstYPosition+') .playground-grid--square:nth-child('+firstXPosition+')'
+          );
+          firstSquare.classList.add('playground-grid--square-first-horizontal');
           firstSquare.appendChild(avatarContainer);  
         }
       },
