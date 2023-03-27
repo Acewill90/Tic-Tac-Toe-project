@@ -1,19 +1,15 @@
-<script setup>
-    import { RouterLink } from 'vue-router'
-</script>
-
 <template>
-    <header :class="{ 'on-game': readyForPlay }">
+    <header :class="{ 'on-game': readyForPlay, 'on-scores-page': onScoresPage }">
         <picture v-if="playerAvatars.first" class="avatar">
             <img :src="'src/assets/images/'+ playerAvatars.first +'.svg'" width="80" height="80" alt="bear-avatar">
         </picture>
-        <RouterLink to="/">
+        <RouterLink to="/" class="router-btn">
             <button type="button" @click="resetPlayers" class="button">
                 <span>Játék indítása</span>
             </button>
         </RouterLink>
         <h1>Amőba</h1>
-        <RouterLink to="/score-list">
+        <RouterLink to="/score-list" class="router-btn">
             <button type="button" class="button button--blue">
                 <span>Toplista</span>
             </button>
@@ -25,12 +21,15 @@
 </template>
 
 <script>
+    import { RouterLink } from 'vue-router'
+
     export default {
         name: 'Header',
         data() {
             return {
                 playerAvatars: {first: '', second: ''},
-                readyForPlay: false
+                readyForPlay: false,
+                onScoresPage: false
             }
         },
         methods: {
@@ -48,6 +47,15 @@
             this.emitter.on("playerAvatars", data => {
                 this.playerAvatars.first =  data.playerOneAvatar;
                 this.playerAvatars.second =  data.playerTwoAvatar;
+            });
+            this.emitter.on("newGameOnFooter", () => {
+                this.resetPlayers();
+            });
+            this.emitter.on("onScoresPage", () => {
+                this.onScoresPage = true;
+            });
+            this.emitter.on("onHomepage", () => {
+                this.onScoresPage = false;
             });
         }
     }
