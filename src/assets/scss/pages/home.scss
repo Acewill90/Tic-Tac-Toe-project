@@ -1,11 +1,14 @@
 @import '../site_variables';
 
-.homepage {
-    padding: 35px 0;
-    background-color: $color-primary;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.on-mobile-title {
+    display: none;
+    font-size: 60px;
+    color: #00dafd;
+    margin-bottom: 30px;
+
+    &._hide {
+        display: none;
+    }
 }
 
 .playground-grid {
@@ -181,5 +184,185 @@
         width: 80px;
         height: auto;
         transition: .2s opacity;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .playground-grid {    
+        &--row {
+            gap: 2px;
+            height: 5vw;
+        }
+    
+        &--square {
+            width: 5vw;
+    
+            &-active {    
+                &::before {
+                    font-size: 4.7vw;
+                }
+            }
+        }    
+    }
+
+    .input {
+        &-wrapper {
+            gap: 10px;
+    
+            input[type=text],
+            input[type=number] {
+                height: 30px;
+                padding: 5px;
+                font-size: 14px;
+                width: 120px;
+            }
+    
+            input[type=number] {
+                height: 25px;
+                width: 50px;
+            }
+        }
+    
+        &-description {
+            font-size: 16px;
+            letter-spacing: 0;
+        }
+    }
+    
+    .form-grid-section {
+        gap: 25px;
+    }
+
+    .radio-wrapper {
+        width: 40px;
+        height: 40px;
+    
+        img {
+            width: 36px;
+        }
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .on-mobile-title{
+        display: block;
+    }
+
+    .playground-grid {    
+        &--row {
+            height: 4.7vw;
+        }
+    
+        &--square {
+            width: 4.7vw;
+    
+            &-active {    
+                &::before {
+                    font-size: 4vw;
+                }
+            }
+        }    
+    }
+
+    .input {
+        &-wrapper {    
+            &:nth-child(odd) {
+                justify-self: start;
+            }
+        }
+    }
+    
+    .form-grid-section {
+        grid-template-columns: 1fr;
+        height: 100%;
+        align-content: center;
+
+        .play-btn {
+            grid-column: 1;
+            position: absolute;
+            left: 50%;
+            bottom: -92px;
+            transform: translate(-50%, 0);
+            white-space: nowrap;
+        }
+    }
+
+    .radio-wrapper {
+        width: 50px;
+        height: 50px;
+    
+        img {
+            width: 46px;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .input {    
+        &-description {
+            font-size: 14px;
+        }
+    }
+    
+    .form-grid-section {
+        gap: 15px;
+    }
+
+    .radio-wrapper {
+        width: 30px;
+        height: 30px;
+    
+        img {
+            width: 28px;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .playground-grid {
+        &--on-play {
+            max-width: 100%;
+            overflow: scroll;
+        }
+
+        &--row {
+            height: 8vw;
+            width: fit-content;
+        }
+    
+        &--square {
+            width: 8vw;
+    
+            &-active {    
+                &::before {
+                    font-size: 7vw;
+                }
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 360px) {
+    .playground-grid {
+        &--row {
+            height: 9vw;
+        }
+    
+        &--square {
+            width: 9vw;
+    
+            &-active {    
+                &::before {
+                    font-size: 8.2vw;
+                }
+            }
+        }
+    }
+
+    .input {    
+        &-description {
+            font-size: 13px;
+        }
     }
 }
