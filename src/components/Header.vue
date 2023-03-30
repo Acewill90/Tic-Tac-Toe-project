@@ -33,7 +33,16 @@
             }
         },
         methods: {
+            removeDataFromLocalStorage(){
+                localStorage.removeItem("board");
+                localStorage.removeItem("boardInputs");
+                localStorage.removeItem("playerOne");
+                localStorage.removeItem("playerTwo");
+                localStorage.removeItem("readyForPlay");
+                localStorage.removeItem("startingX");
+            },
             resetPlayers(){
+                this.removeDataFromLocalStorage();
                 this.playerAvatars.first = '';
                 this.playerAvatars.second = '';
                 this.readyForPlay = false;

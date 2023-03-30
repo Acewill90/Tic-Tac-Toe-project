@@ -88,12 +88,12 @@
     },
     data() {
         return {
-            playerOne: { name: "player-1", avatar: "avatar_grey" },
-            playerTwo: { name: "player-2", avatar: "avatar_grey" },
+            playerOne: { name: "", avatar: "" },
+            playerTwo: { name: "", avatar: "" },
             winner: { name: "", score: 0 },
             readyForPlay: false,
             gameOver: false,
-            boardInputs: { columns: 18, rows: 9, symbols: 5 },
+            boardInputs: { columns: 0, rows: 0, symbols: 0 },
             board: [],
             startingX: true
         };
@@ -132,9 +132,11 @@
                     this.board.push([]);
                 }
             }
-            this.readyForPlay = true;
-            this.emitter.emit("gameStarted", this.readyForPlay);
-            this.emitter.emit("playerAvatars", { playerOneAvatar: this.playerOne.avatar, playerTwoAvatar: this.playerTwo.avatar });
+            // save data to local storage
+            this.setStartingDataToLocalStorage();
+
+            // emit players data
+            this.emitPlayersData();
         },
         resetPlayers() {
             this.playerOne.name = "";
@@ -147,10 +149,11 @@
             this.readyForPlay = false;
             this.gameOver = false;
             this.startingX = true;
+            this.getDataFromLocalStorage();
         },
         clickOnSquare(x, y, e) {
             if (this.startingX) {
-                if (this.board[x][y] === undefined) {
+                if (this.board[x][y] === undefined || this.board[x][y] === null) {
                     this.board[x][y] = "x";
                     e.target.classList.add("playground-grid--square-active", "playground-grid--square-active-x");
                     this.checkWinningRow(x, y, "x");
@@ -158,10 +161,11 @@
                     this.checkWinningDiagonalReverseSlash(x, y, "x");
                     this.checkWinningDiagonalSlash(x, y, "x");
                     this.startingX = false;
+                    this.setClicksToLocalStorage();
                 }
             }
             else {
-                if (this.board[x][y] === undefined) {
+                if (this.board[x][y] === undefined || this.board[x][y] === null) {
                     this.board[x][y] = "o";
                     e.target.classList.add("playground-grid--square-active", "playground-grid--square-active-o");
                     this.checkWinningRow(x, y, "o");
@@ -169,6 +173,7 @@
                     this.checkWinningDiagonalReverseSlash(x, y, "o");
                     this.checkWinningDiagonalSlash(x, y, "o");
                     this.startingX = true;
+                    this.setClicksToLocalStorage();
                 }
             }
         },
@@ -413,6 +418,52 @@
                 .then(res => res.json())
                 .then(data => console.log(data))
                 .catch(err => console.log(err.message));
+        },
+        emitPlayersData(){
+            this.emitter.emit("gameStarted", this.readyForPlay);
+            this.emitter.emit("playerAvatars", { playerOneAvatar: this.playerOne.avatar, playerTwoAvatar: this.playerTwo.avatar });
+        },
+        setStartingDataToLocalStorage(){
+            localStorage.setItem("board", JSON.stringify(this.board));
+            localStorage.setItem("boardInputs", JSON.stringify(this.boardInputs));
+            localStorage.setItem("playerOne", JSON.stringify(this.playerOne));
+            localStorage.setItem("playerTwo", JSON.stringify(this.playerTwo));
+
+            this.readyForPlay = true;
+            localStorage.setItem("readyForPlay", JSON.stringify(this.readyForPlay));
+        },
+        setClicksToLocalStorage(){
+            localStorage.setItem("board", JSON.stringify(this.board));
+            localStorage.setItem("startingX", JSON.stringify(this.startingX));
+        },
+        getDataFromLocalStorage(){
+            const getPlayerOne = localStorage.getItem("playerOne");
+            const getPlayerTwo = localStorage.getItem("playerTwo");
+            const getReadyForPlay = localStorage.getItem("readyForPlay");
+            const getBoard = localStorage.getItem("board");
+            const getBoardInputs = localStorage.getItem("boardInputs");
+            const getStartingX = localStorage.getItem("startingX");
+
+            this.playerOne = JSON.parse(getPlayerOne || '{"name": "", "avatar": ""}');
+            this.playerTwo = JSON.parse(getPlayerTwo || '{"name": "", "avatar": ""}');
+            this.readyForPlay = JSON.parse(getReadyForPlay || 'false');
+            this.board = JSON.parse(getBoard || '[]');
+            this.boardInputs = JSON.parse(getBoardInputs || '{"columns": 18, "rows": 9, "symbols": 5}');
+            this.startingX = JSON.parse(getStartingX || 'true');
+
+            if (getPlayerOne && getPlayerTwo !== null) {
+                this.emitPlayersData();
+            }
+        },
+        checkBoardHistory(){
+            this.board.forEach((rows, index) => {
+                rows.forEach((square, indexRow) => {
+                    if (square !== null){
+                        document.querySelector(".playground-grid--row:nth-child(" + (indexRow+1) + ") .playground-grid--square:nth-child(" + (index+1) + ")")
+                        .classList.add("playground-grid--square-active", "playground-grid--square-active-"+square+"");
+                    }
+                })
+            });
         }
     },
     created() {
@@ -421,6 +472,11 @@
         });
 
         this.emitter.emit('onHomepage');
+
+        this.getDataFromLocalStorage();
+    },
+    mounted() {
+        this.checkBoardHistory();    
     }
 }
 </script>
