@@ -270,7 +270,7 @@
                 positions.forEach((elem) => {
                     document.querySelector(".playground-grid--row:nth-child(" + elem[1] + ") .playground-grid--square:nth-child(" + elem[0] + ")").classList.add("playground-grid--square-winner");
                 });
-                this.avatarOnWinnersBoardDiagonal(positions, y);
+                this.avatarOnWinnersBoardDiagonal(positions);
                 this.winnerNameAndScore();
                 this.sendWinnerData();
                 this.gameOver = true;
@@ -303,56 +303,43 @@
                 positions.forEach((elem) => {
                     document.querySelector(".playground-grid--row:nth-child(" + elem[1] + ") .playground-grid--square:nth-child(" + elem[0] + ")").classList.add("playground-grid--square-winner");
                 });
-                this.avatarOnWinnersBoardDiagonal(positions, y);
+                this.avatarOnWinnersBoardDiagonal(positions);
                 this.winnerNameAndScore();
                 this.sendWinnerData();
                 this.gameOver = true;
             }
         },
         avatarOnWinnersBoardRow(positions, y) {
-            const avatarContainer = document.createElement("div");
             const firstPosition = Math.min(...positions);
             const lastPosition = Math.max(...positions);
-            if (this.startingX === true) {
-                avatarContainer.classList.add("winner-icon", "winner-icon-" + this.playerOne.avatar);
-            }
-            else {
-                avatarContainer.classList.add("winner-icon", "winner-icon-" + this.playerTwo.avatar);
-            }
+            
             if (lastPosition < this.boardInputs.columns) {
                 const lastSquare = document.querySelector(".playground-grid--row:nth-child(" + (y + 1) + ") .playground-grid--square:nth-child(" + lastPosition + ")");
                 lastSquare.classList.add("playground-grid--square-last-horizontal");
-                lastSquare.appendChild(avatarContainer);
+                lastSquare.appendChild(this.makeDivWithWinnerIcon());
             }
             else {
                 const firstSquare = document.querySelector(".playground-grid--row:nth-child(" + (y + 1) + ") .playground-grid--square:nth-child(" + firstPosition + ")");
                 firstSquare.classList.add("playground-grid--square-first-horizontal");
-                firstSquare.appendChild(avatarContainer);
+                firstSquare.appendChild(this.makeDivWithWinnerIcon());
             }
         },
         avatarOnWinnersBoardColumn(positions, x) {
-            const avatarContainer = document.createElement("div");
             const firstPosition = Math.min(...positions);
             const lastPosition = Math.max(...positions);
-            if (this.startingX === true) {
-                avatarContainer.classList.add("winner-icon", "winner-icon-" + this.playerOne.avatar);
-            }
-            else {
-                avatarContainer.classList.add("winner-icon", "winner-icon-" + this.playerTwo.avatar);
-            }
+
             if (lastPosition < this.boardInputs.rows) {
                 const lastSquare = document.querySelector(".playground-grid--row:nth-child(" + lastPosition + ") .playground-grid--square:nth-child(" + (x + 1) + ")");
                 lastSquare.classList.add("playground-grid--square-last-vertical");
-                lastSquare.appendChild(avatarContainer);
+                lastSquare.appendChild(this.makeDivWithWinnerIcon());
             }
             else {
                 const firstSquare = document.querySelector(".playground-grid--row:nth-child(" + firstPosition + ") .playground-grid--square:nth-child(" + (x + 1) + ")");
                 firstSquare.classList.add("playground-grid--square-first-vertical");
-                firstSquare.appendChild(avatarContainer);
+                firstSquare.appendChild(this.makeDivWithWinnerIcon());
             }
         },
-        avatarOnWinnersBoardDiagonal(positions, y) {
-            const avatarContainer = document.createElement("div");
+        avatarOnWinnersBoardDiagonal(positions) {
             function sortFunction(a, b) { if (a[0] < b[0]) {
                 return -1;
             }
@@ -364,22 +351,28 @@
             const lastYPosition = sortedPositions[this.boardInputs.symbols - 1][1];
             const firstXPosition = sortedPositions[0][0];
             const firstYPosition = sortedPositions[0][1];
-            if (this.startingX === true) {
-                avatarContainer.classList.add("winner-icon", "winner-icon-" + this.playerOne.avatar);
-            }
-            else {
-                avatarContainer.classList.add("winner-icon", "winner-icon-" + this.playerTwo.avatar);
-            }
+
             if (lastXPosition < this.boardInputs.columns) {
                 const lastSquare = document.querySelector(".playground-grid--row:nth-child(" + lastYPosition + ") .playground-grid--square:nth-child(" + lastXPosition + ")");
                 lastSquare.classList.add("playground-grid--square-last-horizontal");
-                lastSquare.appendChild(avatarContainer);
+                lastSquare.appendChild(this.makeDivWithWinnerIcon());
             }
             else {
                 const firstSquare = document.querySelector(".playground-grid--row:nth-child(" + firstYPosition + ") .playground-grid--square:nth-child(" + firstXPosition + ")");
                 firstSquare.classList.add("playground-grid--square-first-horizontal");
-                firstSquare.appendChild(avatarContainer);
+                firstSquare.appendChild(this.makeDivWithWinnerIcon());
             }
+        },
+        makeDivWithWinnerIcon() {
+            const avatarContainer = document.createElement("div");
+
+            if (this.startingX === true) {
+                avatarContainer.classList.add("winner-icon", "winner-icon-" + this.playerOne.avatar);
+            } else {
+                avatarContainer.classList.add("winner-icon", "winner-icon-" + this.playerTwo.avatar);
+            }
+
+            return avatarContainer;
         },
         winnerNameAndScore() {
             if (this.startingX) {
