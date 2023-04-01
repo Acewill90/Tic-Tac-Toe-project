@@ -1,7 +1,7 @@
 <template>
     <header :class="{ 'on-game': readyForPlay, 'on-scores-page': onScoresPage }">
         <picture v-if="playerAvatars.first" class="avatar">
-            <img :src="'src/assets/images/'+ playerAvatars.first +'.svg'" width="80" height="80" alt="bear-avatar">
+            <img :src="getImageUrl(playerAvatars.first)" width="80" height="80" alt="bear-avatar">
         </picture>
         <RouterLink to="/" class="router-btn">
             <button type="button" @click="resetPlayers" class="button">
@@ -15,7 +15,7 @@
             </button>
         </RouterLink>
         <picture v-if="playerAvatars.second" class="avatar">
-            <img :src="'src/assets/images/'+ playerAvatars.second +'.svg'" width="80" height="80" alt="bear-avatar">
+            <img :src="getImageUrl(playerAvatars.second)" width="80" height="80" alt="bear-avatar">
         </picture>
     </header>
 </template>
@@ -47,6 +47,9 @@
                 this.playerAvatars.second = '';
                 this.readyForPlay = false;
                 this.emitter.emit('newGame');
+            },
+            getImageUrl(name) {
+                return new URL(`../assets/images/${name}.svg`, import.meta.url).href;
             }
         },
         created (){
