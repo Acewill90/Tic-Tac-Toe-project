@@ -152,29 +152,23 @@
             this.getDataFromLocalStorage();
         },
         clickOnSquare(x, y, e) {
+            let currentSymbol = "";
+
             if (this.startingX) {
-                if (this.board[x][y] === undefined || this.board[x][y] === null) {
-                    this.board[x][y] = "x";
-                    e.target.classList.add("playground-grid--square-active", "playground-grid--square-active-x");
-                    this.checkWinningRow(x, y, "x");
-                    this.checkWinningColumn(x, y, "x");
-                    this.checkWinningDiagonalReverseSlash(x, y, "x");
-                    this.checkWinningDiagonalSlash(x, y, "x");
-                    this.startingX = false;
-                    this.setClicksToLocalStorage();
-                }
+                currentSymbol = "x";
+            } else {
+                currentSymbol = "o";
             }
-            else {
-                if (this.board[x][y] === undefined || this.board[x][y] === null) {
-                    this.board[x][y] = "o";
-                    e.target.classList.add("playground-grid--square-active", "playground-grid--square-active-o");
-                    this.checkWinningRow(x, y, "o");
-                    this.checkWinningColumn(x, y, "o");
-                    this.checkWinningDiagonalReverseSlash(x, y, "o");
-                    this.checkWinningDiagonalSlash(x, y, "o");
-                    this.startingX = true;
-                    this.setClicksToLocalStorage();
-                }
+
+            if (this.board[x][y] === undefined || this.board[x][y] === null) {
+                this.board[x][y] = currentSymbol;
+                e.target.classList.add("playground-grid--square-active", "playground-grid--square-active-"+currentSymbol);
+                this.checkWinningRow(x, y, currentSymbol);
+                this.checkWinningColumn(x, y, currentSymbol);
+                this.checkWinningDiagonalReverseSlash(x, y, currentSymbol);
+                this.checkWinningDiagonalSlash(x, y, currentSymbol);
+                this.startingX = !this.startingX;
+                this.setClicksToLocalStorage();
             }
         },
         checkWinningRow(x, y, symbol) {
