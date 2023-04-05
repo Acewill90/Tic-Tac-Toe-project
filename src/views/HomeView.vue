@@ -233,7 +233,9 @@
                 });
                 this.avatarOnWinnersBoardColumn(positions, x);
                 this.winnerNameAndScore();
-                this.sendWinnerData();
+                if(!this.gameOver){
+                    this.sendWinnerData();
+                }                
                 this.gameOver = true;
             }
         },
@@ -266,7 +268,9 @@
                 });
                 this.avatarOnWinnersBoardDiagonal(positions);
                 this.winnerNameAndScore();
-                this.sendWinnerData();
+                if(!this.gameOver){
+                    this.sendWinnerData();
+                }
                 this.gameOver = true;
             }
         },
@@ -299,7 +303,9 @@
                 });
                 this.avatarOnWinnersBoardDiagonal(positions);
                 this.winnerNameAndScore();
-                this.sendWinnerData();
+                if(!this.gameOver){
+                    this.sendWinnerData();
+                } 
                 this.gameOver = true;
             }
         },
