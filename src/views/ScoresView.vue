@@ -45,7 +45,6 @@ export default {
   },
 
   created() {
-    console.log(import.meta.env);
     this.emitter.emit('onScoresPage');
   }
 }
