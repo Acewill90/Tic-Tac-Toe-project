@@ -199,7 +199,7 @@
                     document.querySelector(".playground-grid--row:nth-child(" + (y + 1) + ") .playground-grid--square:nth-child(" + elem + ")").classList.add("playground-grid--square-winner");
                 });
                 this.avatarOnWinnersBoardRow(positions, y);
-                this.winnerNameAndScore();
+                this.winnerNameAndScore(symbol);
                 this.sendWinnerData();
                 this.gameOver = true;
             }
@@ -232,7 +232,7 @@
                     document.querySelector(".playground-grid--row:nth-child(" + elem + ") .playground-grid--square:nth-child(" + (x + 1) + ")").classList.add("playground-grid--square-winner");
                 });
                 this.avatarOnWinnersBoardColumn(positions, x);
-                this.winnerNameAndScore();
+                this.winnerNameAndScore(symbol);
                 if(!this.gameOver){
                     this.sendWinnerData();
                 }                
@@ -267,7 +267,7 @@
                     document.querySelector(".playground-grid--row:nth-child(" + elem[1] + ") .playground-grid--square:nth-child(" + elem[0] + ")").classList.add("playground-grid--square-winner");
                 });
                 this.avatarOnWinnersBoardDiagonal(positions);
-                this.winnerNameAndScore();
+                this.winnerNameAndScore(symbol);
                 if(!this.gameOver){
                     this.sendWinnerData();
                 }
@@ -302,7 +302,7 @@
                     document.querySelector(".playground-grid--row:nth-child(" + elem[1] + ") .playground-grid--square:nth-child(" + elem[0] + ")").classList.add("playground-grid--square-winner");
                 });
                 this.avatarOnWinnersBoardDiagonal(positions);
-                this.winnerNameAndScore();
+                this.winnerNameAndScore(symbol);
                 if(!this.gameOver){
                     this.sendWinnerData();
                 } 
@@ -374,27 +374,20 @@
 
             return avatarContainer;
         },
-        winnerNameAndScore() {
+        winnerNameAndScore(symbol) {
             if (this.startingX) {
                 this.winner.name = this.playerOne.name;
-                this.board.forEach((elems) => {
-                    elems.forEach((elem) => {
-                        if (elem === "x") {
-                            this.winner.score++;
-                        }
-                    });
-                });
-            }
-            else {
+            } else {
                 this.winner.name = this.playerTwo.name;
-                this.board.forEach((elems) => {
-                    elems.forEach((elem) => {
-                        if (elem === "o") {
-                            this.winner.score++;
-                        }
-                    });
-                });
             }
+
+            this.board.forEach((elems) => {
+                elems.forEach((elem) => {
+                    if (elem === symbol) {
+                        this.winner.score++;
+                    }
+                });
+            });
         },
         sendWinnerData() {
             const authToken = import.meta.env.VITE_AUTH_TOKEN;
