@@ -397,7 +397,7 @@
             }
         },
         sendWinnerData() {
-            const authToken = "hkew57zhne345hb3kw-zh65u";
+            const authToken = import.meta.env.VITE_AUTH_TOKEN;
             fetch("https://eomxihgqom5ex61.m.pipedream.net/result", {
                 method: "POST",
                 headers: {
